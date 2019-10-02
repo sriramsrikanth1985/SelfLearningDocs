@@ -1,0 +1,407 @@
+https://www.youtube.com/watch?v=VlSW-tztsvM&t=684s
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$docker info  (information about the docker machine and client)
+
+Client:
+ Debug Mode: false
+
+Server:
+ Containers: 2
+  Running: 0
+  Paused: 0
+  Stopped: 2
+ Images: 1
+ Server Version: 18.09.9
+ Storage Driver: overlay2
+  Backing Filesystem: extfs
+  Supports d_type: true
+  Native Overlay Diff: true
+ Logging Driver: json-file
+ Cgroup Driver: cgroupfs
+ Plugins:
+  Volume: local
+  Network: bridge host macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog
+ Swarm: inactive
+ Runtimes: runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 894b81a4b802e4eb2a91d1ce216b8817763c29fb
+ runc version: 425e105d5a03fabd737a126ad93d62a9eeede87f
+ init version: fec3683
+ Security Options:
+  seccomp
+   Profile: default
+ Kernel Version: 4.14.141-boot2docker
+ Operating System: Boot2Docker 18.09.9 (TCL 8.2.1)
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 1
+ Total Memory: 989.4MiB
+ Name: default
+ ID: JI7F:NCSK:DP7O:GX4L:D4XY:B557:3MCG:KIZD:H7ZT:5X6S:BWW5:W3ZM
+ Docker Root Dir: /mnt/sda1/var/lib/docker
+ Debug Mode: false
+ Registry: https://index.docker.io/v1/
+ Labels:
+  provider=virtualbox
+ Experimental: false
+ Insecure Registries:
+  127.0.0.0/8
+ Live Restore Enabled: false
+ Product License: Community Engine
+ 
+$ docker-machine ls (list all the docker machines running)
+NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER     ERRORS
+default   *        virtualbox   Running   tcp://192.168.99.100:2376           v18.09.9
+
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker version (to list the docker client and server version details)
+Client:
+ Version:           19.03.1
+ API version:       1.39 (downgraded from 1.40)
+ Go version:        go1.12.7
+ Git commit:        74b1e89e8a
+ Built:             Wed Jul 31 15:18:18 2019
+ OS/Arch:           windows/amd64
+ Experimental:      false
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          18.09.9
+  API version:      1.39 (minimum version 1.12)
+  Go version:       go1.11.13
+  Git commit:       039a7df9ba
+  Built:            Wed Sep  4 16:55:50 2019
+  OS/Arch:          linux/amd64
+  Experimental:     false
+
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker images (to list all the local images stored locally)
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+hello-world         latest              fce289e99eb9        9 months ago        1.84kB
+
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker run busybox:1.24 echo "Hello Sriram" (to run an image busybox in forground)
+Unable to find image 'busybox:1.24' locally
+1.24: Pulling from library/busybox
+385e281300cc: Pull complete
+a3ed95caeb02: Pull complete
+Digest: sha256:8ea3273d79b47a8b6d018be398c17590a4b5ec604515f416c5b797db9dde3ad8
+Status: Downloaded newer image for busybox:1.24
+Hello Sriram
+
+Root directories inside the container using:
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker run busybox:1.24 ls / (to list the file structure inside the container)
+bin
+dev
+etc
+home
+proc
+root
+sys
+tmp
+usr
+var
+
+interactive mode while starting a container ****
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker run -i -t busybox:1.24  (to run the container in interactive and attache stdin and stdout to console)
+/ # ls
+bin   dev   etc   home  proc  root  sys   tmp   usr   var
+/ # touch a.txt
+/ # ls
+a.txt  bin    dev    etc    home   proc   root   sys    tmp    usr    var
+/ # exit
+Note: Only valid for this session of the container... once exit this container specific files are lost and re-running will create a fresh container
+-i -> for interactive mode and -t flag creates a pseudo-TTY that attaches stdin and stdout..
+
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker ps (to list all the containers running currently active)
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+3dfc48170ee7        busybox:1.24        "sh"                35 seconds ago      Up 29 seconds                           pensive_shirley
+
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker run -d busybox:1.24 sleep 1000 (to run the container in detached mode)
+972eafc911793c3c33483184fefb8673cab36f215e7aa1fbb22f63c4fc8d5e3c
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+972eafc91179        busybox:1.24        "sleep 1000"        17 seconds ago      Up 12 seconds                           confident_mahavira
+3dfc48170ee7        busybox:1.24        "sh"                7 minutes ago       Up 7 minutes                            pensive_shirley
+
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$  docker ps -a (to list all the containers which are started in this docker-machine, including running and exited)
+CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS                      PORTS               NAMES
+972eafc91179        busybox:1.24        "sleep 1000"             About a minute ago   Up About a minute                              confident_mahavira
+3dfc48170ee7        busybox:1.24        "sh"                     8 minutes ago        Up 8 minutes                                    pensive_shirley
+00ee2e8e7f71        busybox:1.24        "sh"                     11 minutes ago       Exited (0) 10 minutes ago                       epic_meninsky
+1cfa4ff5a81e        busybox:1.24        "ls /"                   13 minutes ago       Exited (0) 13 minutes ago                       hopeful_stallman
+3923da54ed2a        busybox:1.24        "echo 'Hello Srikant…"   13 minutes ago       Exited (0) 13 minutes ago                       goofy_bose
+bb0502949d8b        busybox:1.24        "echo 'Hello Sriram'"    14 minutes ago       Exited (0) 14 minutes ago                       festive_goldberg
+96012fb31edf        hello-world         "/hello"                 18 hours ago         Exited (0) 18 hours ago                         blissful_volhard
+27e149f3f462        hello-world         "/hello"                 23 hours ago         Exited (0) 23 hours ago                         recursing_shamir
+
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker run --rm busybox:1.24 sleep 1 (to remove the docker immediately after the exit)
+
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker run --name helloworld busybox:1.24 echo "Sriram srikanth"  (to name the container as per our choice otherwise some random is applied)
+Sriram srikanth
+
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker ps -a 
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                      PORTS               NAMES
+16335fcfab30        busybox:1.24        "echo 'Sriram srikan…"   13 seconds ago      Exited (0) 8 seconds ago                        helloworld
+
+================== docker inspect, image-id, log-path, status, network-settings, mount-path etc  ============================ 
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker run -d busybox:1.24 sleep 100
+97893dd0033e4a9031d785b5f20f00c071afd3fc3881cd8035096caaf0233f8f
+
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker inspect 97893dd0033e4a9031d785b5f20f00c071afd3fc3881cd8035096caaf0233f8f
+[
+    {
+        "Id": "97893dd0033e4a9031d785b5f20f00c071afd3fc3881cd8035096caaf0233f8f",
+        "Created": "2019-10-01T07:23:20.667860203Z",
+        "Path": "sleep",
+        "Args": [
+            "100"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 4119,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2019-10-01T07:23:20.866896601Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:47bcc53f74dc94b1920f0b34f6036096526296767650f223433fe65c35f149eb",
+        "ResolvConfPath": "/mnt/sda1/var/lib/docker/containers/97893dd0033e4a9031d785b5f20f00c071afd3fc3881cd8035096caaf0233f8f/resolv.conf",
+        "HostnamePath": "/mnt/sda1/var/lib/docker/containers/97893dd0033e4a9031d785b5f20f00c071afd3fc3881cd8035096caaf0233f8f/hostname",
+        "HostsPath": "/mnt/sda1/var/lib/docker/containers/97893dd0033e4a9031d785b5f20f00c071afd3fc3881cd8035096caaf0233f8f/hosts",
+        "LogPath": "/mnt/sda1/var/lib/docker/containers/97893dd0033e4a9031d785b5f20f00c071afd3fc3881cd8035096caaf0233f8f/97893dd0033e4a9031d785b5f20f00c071afd3fc3881cd8035096caaf0233f8f-json.log",
+        "Name": "/musing_hertz",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "default",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "CapAdd": null,
+            "CapDrop": null,
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "shareable",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "ConsoleSize": [
+                41,
+                172
+            ],
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DiskQuota": 0,
+            "KernelMemory": 0,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": false,
+            "PidsLimit": 0,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/mnt/sda1/var/lib/docker/overlay2/a66ecb930d5b801515b10a858ad7cf72f48f4476bba4295b138bfeed8747ecb3-init/diff:/mnt/sda1/var/lib/docker/overlay2/a4ff392bfb0c790f1719d0ea1d0f33cdb630eec83dc9fa973d465ca4eb94f716/diff:/mnt/sda1/var/lib/docker/overlay2/e79b091ba992976a09cced3332e965748e3331f9df9ea2b0a4b8a804ba958185/diff",
+                "MergedDir": "/mnt/sda1/var/lib/docker/overlay2/a66ecb930d5b801515b10a858ad7cf72f48f4476bba4295b138bfeed8747ecb3/merged",
+                "UpperDir": "/mnt/sda1/var/lib/docker/overlay2/a66ecb930d5b801515b10a858ad7cf72f48f4476bba4295b138bfeed8747ecb3/diff",
+                "WorkDir": "/mnt/sda1/var/lib/docker/overlay2/a66ecb930d5b801515b10a858ad7cf72f48f4476bba4295b138bfeed8747ecb3/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [],
+        "Config": {
+            "Hostname": "97893dd0033e",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": null,
+            "Cmd": [
+                "sleep",
+                "100"
+            ],
+            "Image": "busybox:1.24",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {}
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "98fa20e7dbe4d72674cb43c4981fe5bf7493831f8cb26e84faa4f61fc9d46e25",
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "Ports": {},
+            "SandboxKey": "/var/run/docker/netns/98fa20e7dbe4",
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "8e4bdd408c3f6f6646af21a97d26c403c48881277151a93445c24fc334d94c26",
+            "Gateway": "172.17.0.1",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "172.17.0.4",
+            "IPPrefixLen": 16,
+            "IPv6Gateway": "",
+            "MacAddress": "02:42:ac:11:00:04",
+            "Networks": {
+                "bridge": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "NetworkID": "139d8e409f9d22446f595ad6854edc30d60c4897e726525630b047e3b18dd420",
+                    "EndpointID": "8e4bdd408c3f6f6646af21a97d26c403c48881277151a93445c24fc334d94c26",
+                    "Gateway": "172.17.0.1",
+                    "IPAddress": "172.17.0.4",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "MacAddress": "02:42:ac:11:00:04",
+                    "DriverOpts": null
+                }
+            }
+        }
+    }
+]
+=========================================================== 
+docker run -it --rm -p 8888:8080 tomcat:8.0 (will import the tomcat image - around 300MB size, and then it will start at port 8888 to external world, but internally to container its running at 8080 default port itself)
+
+http://192.168.99.100:8888/
+
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker run -it -d -p 8888:8080 tomcat:8.0  (to run in background/detach mode)
+8bcb0145b5061c7a25a1be735c7d01838a2cff7980da9dbf1568c41c529f24da
+
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker exec -it 8bcb0145b5061c7a25a1be735c7d01838a2cff7980da9dbf1568c41c529f24da ls -lrt work/Catalina/localhost  (to list/execute command on specific container file system)
+total 20
+drwxr-xr-x 2 root root 4096 Oct  1 07:40 examples
+drwxr-xr-x 2 root root 4096 Oct  1 07:40 docs
+drwxr-xr-x 2 root root 4096 Oct  1 07:40 ROOT
+drwxr-xr-x 2 root root 4096 Oct  1 07:40 host-manager
+drwxr-xr-x 3 root root 4096 Oct  1 07:44 manager
+
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker exec -it 8bcb0145b5061c7a25a1be735c7d01838a2cff7980da9dbf1568c41c529f24da cat/mkdir/<anyCommand> <arguments>
+
+docker commit 8bcb0145b5061c7a25a1be735c7d01838a2cff7980da9dbf1568c41c529f24da mysnapshot
+$ docker run -it mysnapshot /bin/bash
+root@7eaf7d67517b:/usr/local/tomcat# ls -lrt
+total 120
+drwxr-xr-x 7 root root   4096 Jun 29  2018 webapps ===> then we can use any cat, ls, mv, cp etc.. except vi, for vi use sed to acheive as below:
+root@7eaf7d67517b:/usr/local/tomcat/conf# sed 's/username="tomcat" password="<must-be-changed>"/username="tomcat" password="tomcat"/' tomcat-users.xml.bkp > tomcat-users.xml
+...
+root@7eaf7d67517b:/usr/local/tomcat/conf# diff tomcat-users.xml tomcat-users.xml.bkp
+40c40
+<   <user username="tomcat" password="tomcat" roles="tomcat"/>
+---
+>   <user username="tomcat" password="<must-be-changed>" roles="tomcat"/>
+root@7eaf7d67517b:/usr/local/tomcat/conf#
+...
+root@7eaf7d67517b:/usr/local/tomcat/conf# sed 's/<\/tomcat-users>/<user username="tomcat" password="tomcat" roles="tomcat"\/><\/tomcat-users>/' tomcat-users.xml.bkp > tomcat-users.xml
+
+(or)
+docker run -d -p 22 mysnapshot /usr/sbin/sshd -D
+then...
+
+esrirsr@IN-00223280 MINGW64 /c/Program Files/Docker Toolbox
+$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                         PORTS                             NAMES
+7eaf7d67517b        mysnapshot          "/bin/bash"              3 minutes ago       Up 3 minutes                   8080/tcp                          tender_elbakyan
+a963b467e69f        mysnapshot          "/usr/sbin/sshd -D"      3 minutes ago       Created                        8080/tcp, 0.0.0.0:32768->22/tcp   elated_lamport
+8bcb0145b506        tomcat:8.0          "catalina.sh run"        24 minutes ago      Up 24 minutes                  0.0.0.0:8888->8080/tcp            musing_shockley
+
