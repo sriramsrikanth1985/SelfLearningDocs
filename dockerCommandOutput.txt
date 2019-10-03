@@ -404,4 +404,115 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 7eaf7d67517b        mysnapshot          "/bin/bash"              3 minutes ago       Up 3 minutes                   8080/tcp                          tender_elbakyan
 a963b467e69f        mysnapshot          "/usr/sbin/sshd -D"      3 minutes ago       Created                        8080/tcp, 0.0.0.0:32768->22/tcp   elated_lamport
 8bcb0145b506        tomcat:8.0          "catalina.sh run"        24 minutes ago      Up 24 minutes                  0.0.0.0:8888->8080/tcp            musing_shockley
+=========== 
+docker logs <docker-id>> => for looking at the logs of the container
 
+docker history tomcat:8.0  => gives details information about the layers starting from the base layer from the image.
+
+volumes:
+docker volume create my-vol
+docker volume ls
+docker volume inspect my-vol
+docker volume rm my-vol
+
+start a container with volume:
+docker run -d \
+  --name devtest \
+  --mount source=myvol2,target=/app \
+  nginx:latest
+(or)
+docker run -d \
+  --name devtest \
+  -v myvol2:/app \
+  nginx:latest
+(and  -- for read only volume to be used)
+docker run -d \
+  --name=nginxtest \
+  -v nginx-vol:/usr/share/nginx/html:ro \
+  nginx:latest
+  
+docker container stop devtest
+docker container rm devtest
+docker volume rm myvol2
+
+start a service with volume:
+docker service create -d \
+  --replicas=4 \
+  --name devtest-service \
+  --mount source=myvol2,target=/app \
+  nginx:latest
+ 
+ docker service ps devtest-service
+ docker service rm devtest-service
+
+Containers
+Use docker container my_command
+	create — Create a container from an image.
+	start — Start an existing container.
+	run — Create a new container and start it.
+	ls — List running containers.
+	inspect — See lots of info about a container.
+	logs — Print logs.
+	stop — Gracefully stop running container.
+	kill —Stop main process in container abruptly.
+	rm— Delete a stopped container.
+Images
+Use docker image my_command
+	build — Build an image.
+	push — Push an image to a remote registry.
+	ls — List images.
+	history — See intermediate image info.
+	inspect — See lots of info about an image, including the layers.
+	rm — Delete an image.
+
+ misc:
+	docker version — List info about your Docker Client and Server versions.
+	docker login — Log in to a Docker registry.
+	docker system prune — Delete all unused containers, unused networks, and dangling images.
+
+/usr/share/jenkins/jenkins.war
+admin password: 8f5785860fe64dfabbdbe55c3fe20baf
+This may also be found at: /var/jenkins_home/secrets/initialAdminPassword
+
+$ docker volume create JenkinVolume
+
+$ docker volume inspect JenkinVolume
+[
+    {
+        "CreatedAt": "2019-10-02T13:03:38Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/mnt/sda1/var/lib/docker/volumes/JenkinVolume/_data",
+        "Name": "JenkinVolume",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+
+docker run -d \
+  --name jenkins \
+  -p 8080:8080 -p 50000:50000 \
+  -v JenkinVolume:/app \
+  jenkins:2.107.3
+
+$ docker exec -it 29e3d39f8283 cat /var/jenkins_home/secrets/initialAdminPassword
+8c014a8a9c3341668c599ba1cc54fcc1
+
+
+docker volume create jenkins-data
+docker run --name jenkins-production \
+           --detach \
+           -p 50000:50000 \
+           -p 8080:8080 \
+           -v jenkins-data:/var/jenkins_home \
+           jenkins/jenkins:2.107.3
+# If run for the first time, just run the following to get the admin password once it has finished starting
+docker exec jenkins-production bash -c 'cat $JENKINS_HOME/secrets/initialAdminPassword'
+
+ ************ docker container exec -u 0 -it e6432b9100c9 bash  ************ to login to bash prompt of a container ************8
+ docker pull jenkins/jenkins:lts  => to pull the latest version of jenkins
+ 
+ 
+ ****** docker cp config.xml e6432b9100c9:/var/jenkins_home/ ******** copy files from local to containerID:<path> ********** 
+ ******  docker cp e6432b9100c9:/var/jenkins_home/config.xml.bkp . ***** copy files from containerID to local ********** 
+ 
