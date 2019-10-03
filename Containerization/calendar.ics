@@ -1,0 +1,11 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+URL:https://ml-in-telecoms-copenhagen.eventbrite.co.uk
+DTSTART:20191011T070000Z
+DTEND:20191011T150000Z
+SUMMARY:Machine Learning in Telecoms, Copenhagen
+DESCRIPTION:For details, click here: https://ml-in-telecoms-copenhagen.eventbrite.co.uk
+LOCATION:Google - 5 Sankt Petri Passage - 1165 København - Denmark
+END:VEVENT
+END:VCALENDAR
