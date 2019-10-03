@@ -1,0 +1,64 @@
+Maven:
+
+Ant -> manually write code/scripts for each task, what tasks are and when to execute, its a combursome in wirting and complex in maintaining.
+
+Java based projects -> powerful build process. Can automate entire build process.
+
+What is maven?
+1. Project of Apache software foundation
+2. Build automation tool
+3. Project management tool
+4. Handles complete build process
+
+Two critical aspects of Building software (both acheived using pom.xml)
+1. Describes how software is built
+2. Describes the dependencies
+
+xml -> software is built, its dependencies, components, build order, directories and required plugins/libraries
+
+------- 
+Maven architecture
+1. Local repository
+2. Central/remote repository (using internet/http connectivity)
+3. Build system (project.xml, maven.xml)
+
+Maven lifecycle
+default (23 phases), clean (3 phases) and site (4 phases)
+validate, compile, test-compile, package (jar/war), resources, install and deploy etc phases...
+Maven goals: Each phase has a specific goals
+
+Group-ID : uniquely identifies the project package (com.res)
+Artifact: maven.selenium (final name of compilation unit)
+Version: version of the created artifacts
+jar, pom or war
+Name: name of the project
+
+maven project directory structure:
+src/main/java -> application code
+src/main/resources -> all the application dependency resources
+src/test/java -> all application testing code
+src/test/resources -> all the application test dependency resources
+JRE system libraries
+pom.xml 
+
+pom.xml =>
+project tag:
+version=> if contains snapshot, it indicates work is still in progress
+Name, groupId, artifactId etc.. related to maven project given at the time of project creation
+properties tag: 
+build tag: => plugins: maven compiler plugin and maven surefire plugin-testing etc..
+dependencies tag:
+like selenium and testNG along with thier versions to be obtained from mvnrepository.org=> then type selenium and get the details..
+
+
+***selenium is very popularly used to test web applications, also testcase management and report generation ***
+
+mvn clean
+mvn compile
+mvn test-compile
+
+
+
+
+
+
